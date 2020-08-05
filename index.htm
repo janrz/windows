@@ -1,0 +1,37 @@
+<html>
+<head>
+	<title>Windows</title>
+	<meta charset="utf-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="style.css" />
+	<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
+	<script src="script.js"></script>
+</head>
+<body>
+	<div id="desktop">
+		<div id="firefoxWindow" class="window">
+		<div id="topBar">
+			<div class="button" id="close">x</div>
+			<div class="button" id="restore">o</div>
+			<div class="button" id="minimize">-</div>
+		</div>
+		<div id="content">
+			<div id="addressBar">
+				<input id="url">
+				<button id="go">Go</button>
+			</div>
+			<iframe id="firefoxFrame"></iframe>
+		</div>
+	</div> 
+	</div>
+	<div id="taskbar">
+		<div id="startButton">
+			<div id="startMenu"></div>
+		</div>
+		<div id="icons">
+			<div id="firefox" class="taskbarIcon active"></div>
+			<div id="explorer" class="taskbarIcon"></div>
+		</div>
+	</div>	
+</body>
+</html>
