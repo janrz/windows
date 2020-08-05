@@ -2,11 +2,15 @@ var firefoxData = {};
 
 function restoreWindow(thisWindow) {
 	if (thisWindow.width() == thisWindow.parent().width()) {
-		thisWindow.css("height", firefoxData.height);
-		thisWindow.css("width", firefoxData.width);
-		thisWindow.css("top", firefoxData.top);
-		thisWindow.css("left", firefoxData.left);
+
+		thisWindow.animate({
+			height: firefoxData.height,
+			width: firefoxData.width,
+			top: firefoxData.top,
+			left: firefoxData.left
+		}, 100);
 	} else {
+		
 		currentHeight = thisWindow.height()
 		currentWidth = thisWindow.width()
 		currentTop = thisWindow.position().top
@@ -19,10 +23,12 @@ function restoreWindow(thisWindow) {
 			left: currentLeft
 		};
 
-		thisWindow.css("height", "calc(100% - 35px)");
-		thisWindow.css("width", "100%");
-		thisWindow.css("top", "0");
-		thisWindow.css("left", "0");
+		thisWindow.animate({
+			height: "100%",
+			width: "100%",
+			top: 0,
+			left: 0
+		}, 100);
 	}
 }
 
@@ -56,6 +62,10 @@ $(document).ready(function(){
 		}
 	});
 
+	$("#topBar").dblclick(function() {
+		restoreWindow($(this).parent());
+	});
+
 	dragElement($(".window")[0]);
 
 });
@@ -84,7 +94,6 @@ function dragElement(elmnt) {
   function elementDrag(e) {
     e = e || window.event;
     e.preventDefault();
-    restoreWindow(elmnt);
     // calculate the new cursor position:
     pos1 = pos3 - e.clientX;
     pos2 = pos4 - e.clientY;
