@@ -1,4 +1,7 @@
+var WINDOW_RESIZE_ANIMATION_DURATION = 50
+
 var firefoxData = {};
+
 
 function restoreWindow(thisWindow) {
 	if (thisWindow.width() == thisWindow.parent().width()) {
@@ -8,7 +11,7 @@ function restoreWindow(thisWindow) {
 			width: firefoxData.width,
 			top: firefoxData.top,
 			left: firefoxData.left
-		}, 100);
+		}, WINDOW_RESIZE_ANIMATION_DURATION);
 	} else {
 		
 		currentHeight = thisWindow.height()
@@ -28,7 +31,7 @@ function restoreWindow(thisWindow) {
 			width: "100%",
 			top: 0,
 			left: 0
-		}, 100);
+		}, WINDOW_RESIZE_ANIMATION_DURATION);
 	}
 }
 
