@@ -1,6 +1,7 @@
 var WINDOW_RESIZE_ANIMATION_DURATION = 50
 
 var firefoxData = {};
+var openWindows = 0;
 
 
 function restoreWindow(thisWindow) {
@@ -35,14 +36,48 @@ function restoreWindow(thisWindow) {
 	}
 }
 
+function closeWindow(thisWindow) {
+	thisWindow.remove();
+}
+
+function minimizeWindow(thisWindow) {
+	thisWindow.hide();
+}
+
+function newFirefoxWindow() {
+	$(".window.active").removeClass("active");
+	newWindow = $("<div></div>").addClass("window active");
+	topBar = $("<div></div>").addClass("topBar");
+	closeButton = $("<div>x</div>").addClass("button close");
+	restoreButton = $("<div>o</div>").addClass("button restore");
+	minimizeButton = $("<div>-</div>").addClass("button minimize");
+	closeButton.appendTo(topBar);
+	restoreButton.appendTo(topBar);
+	minimizeButton.appendTo(topBar);
+	topBar.appendTo(newWindow);
+	newWindow.css("top", (10 + openWindows * 2) + "%");
+	newWindow.css("left", (10 + openWindows * 2) + "%");
+	newWindow.appendTo("#desktop");
+	openWindows++;
+}
+
 $(document).ready(function(){
 	
 	$(document).on('click', "#startButton", function() {
 		$("#startMenu").toggle();
 	});
 
+	$(document).on('mousedown', ".window", function() {
+		$(".window.active").removeClass("active");
+		$(this).addClass("active");
+	});
+
 	$(document).on('click', ".taskbarIcon#firefox", function() {
 		$(".window#firefoxWindow").toggle();
+	});
+
+	$(document).on('click', ".taskbarIcon#explorer", function() {
+		newFirefoxWindow();
 	});
 
 	$(document).on('click', "#go", function() {
@@ -50,38 +85,40 @@ $(document).ready(function(){
 		$('#firefoxFrame').attr('src', "http://" + url)
 	});
 
-	$(".button").click(function() {
-		action = $(this).attr("id");
+	$(document).on('click', ".button", function() {
+		action = $(this).attr("class").split(" ")[1];
 		clickedWindow = $(this).parent().parent();
 		switch(action) {
 			case "restore":
 				restoreWindow(clickedWindow);
 				break;
 			case "minimize":
-				clickedWindow.hide();
+				minimizeWindow(clickedWindow);
 				break;
 			case "close":
+				closeWindow(clickedWindow);
 				break;
 		}
 	});
 
-	$("#topBar").dblclick(function() {
+	$(".topBar").dblclick(function() {
 		restoreWindow($(this).parent());
 	});
 
-	dragElement($(".window")[0]);
+	$(document).on('mousedown', ".topBar", function() {
+		dragElement($(this).parent()[0]);
+	});
 
+	$("#desktop").on('mousedown', function(e) {
+		if (e.target.id == "desktop") {
+			$(".window.active").removeClass("active");
+		}
+	});
 });
 
 function dragElement(elmnt) {
   var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-  if ($("#firefoxWindow" + " " + "#topBar")) {
-    // if present, the header is where you move the DIV from:
-    document.getElementById("firefoxWindow").onmousedown = dragMouseDown;
-  } else {
-    // otherwise, move the DIV from anywhere inside the DIV:
-    elmnt.onmousedown = dragMouseDown;
-  }
+  elmnt.onmousedown = dragMouseDown;
 
   function dragMouseDown(e) {
     e = e || window.event;

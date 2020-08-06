@@ -32,7 +32,7 @@ body {
 }
 
 #taskbar, #taskbar * {
-	z-index: 2;
+	z-index: 3;
 }
 
 #startButton {
@@ -105,25 +105,38 @@ body {
 	position: absolute;
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 	z-index: 1;
+	top: 10%;
+	left: 10%;
+	height: 750px;
+	width: 900px;
+	background: white;
 }
 
-.window #topBar {
+.window.active {
+	z-index: 2;
+}
+
+.window .topBar {
 	height: 37px;
 	background: black;
 }
 
-.window #topBar .button {
+.window .topBar .button {
 	width: 45px;
 	height: 100%;
 	float: right;
+	color: grey;
+}
+
+.window.active .topBar .button {
 	color: white;
 }
 
-.window #topBar .button:hover {
+.window .topBar .button:hover {
 	background: grey;
 }
 
-.window #topBar .button#close:hover {
+.window .topBar .button.close:hover {
 	background: red;
 }
 
@@ -133,9 +146,6 @@ body {
 
 .window#firefoxWindow {
 	display: none;
-	height: 750px;
-	width: 900px;
-	background: white;
 }
 
 .window#firefoxWindow #addressBar {
