@@ -90,7 +90,9 @@ body {
 	background-size: 54%;
 }
 
-#startButton:hover, .taskbarIcon:hover {
+#startButton:hover, 
+.taskbarIcon:hover,
+#desktopButton:hover {
 	background-color: #2b4556;
 }
 
@@ -101,15 +103,26 @@ body {
 	color: white;
 }
 
+#desktopButton {
+	float: right;
+	border-left: solid grey 1px;
+	width: 5px;
+	height: 100%;
+}
+
 .window {
 	position: absolute;
-	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 	z-index: 1;
 	top: 10%;
 	left: 10%;
 	height: 750px;
 	width: 900px;
 	background: white;
+}
+
+.window, .transparentWindow {
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	position: absolute;
 }
 
 .window.active {
@@ -157,6 +170,10 @@ body {
 	width: 100%;
 	height: 95%;
 	border: none;
+	display: none;
+}
+
+.transparentWindow {
 	display: none;
 }
 

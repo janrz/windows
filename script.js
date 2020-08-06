@@ -1,4 +1,6 @@
-var WINDOW_RESIZE_ANIMATION_DURATION = 50
+var WINDOW_RESIZE_ANIMATION_DURATION = 50;
+var AERO_PEEK_DELAY = 300;
+var AERO_ANIMATION_DURATION = 200;
 
 var firefoxData = {};
 var openWindows = 0;
@@ -38,13 +40,20 @@ function restoreWindow(thisWindow) {
 
 function closeWindow(thisWindow) {
 	thisWindow.remove();
+	openWindows--;
 }
 
 function minimizeWindow(thisWindow) {
 	thisWindow.hide();
 }
 
-function newFirefoxWindow() {
+function minimizeAllWindows() {
+	$(".window").each(function() { 
+		minimizeWindow($(this));
+	});
+}
+
+function openNewWindow() {
 	$(".window.active").removeClass("active");
 	newWindow = $("<div></div>").addClass("window active");
 	topBar = $("<div></div>").addClass("topBar");
@@ -61,8 +70,51 @@ function newFirefoxWindow() {
 	openWindows++;
 }
 
+function startAeroPeek() {
+	$(".window").each(function() {
+
+		width = $(this).css("width");
+		console.log(width);
+		height = $(this).css("height");
+		console.log(height);
+		top = $(this).position().top;
+		console.log($(this).position().top);
+		left = $(this).position().left;
+		console.log(left);
+		transparentDiv = $("<div></div>").addClass("transparentWindow")
+		transparentDiv.css("width", width);
+		transparentDiv.css("height", height);
+		transparentDiv.css("top", $(this).position().top);
+		transparentDiv.css("left", left);
+		transparentDiv.appendTo("#desktop");
+		transparentDiv.fadeIn(AERO_ANIMATION_DURATION);
+		$(this).fadeOut(AERO_ANIMATION_DURATION);
+	});
+}
+
+function stopAeroPeek() {
+	$(".transparentWindow").each(function() {
+		$(this).remove();
+	});
+
+	$(".window").each(function() {
+		$(this).fadeIn(AERO_ANIMATION_DURATION);
+	});
+}
+
 $(document).ready(function(){
-	
+	var timeout;
+    $("#desktopButton").hover(
+        function() {
+            timeout = setTimeout(function(){
+                startAeroPeek();
+            }, AERO_PEEK_DELAY);
+        },
+        function(){
+        	stopAeroPeek();
+            clearTimeout(timeout);
+        }
+    );
 	$(document).on('click', "#startButton", function() {
 		$("#startMenu").toggle();
 	});
@@ -77,7 +129,7 @@ $(document).ready(function(){
 	});
 
 	$(document).on('click', ".taskbarIcon#explorer", function() {
-		newFirefoxWindow();
+		openNewWindow();
 	});
 
 	$(document).on('click', "#go", function() {
@@ -113,6 +165,10 @@ $(document).ready(function(){
 		if (e.target.id == "desktop") {
 			$(".window.active").removeClass("active");
 		}
+	});
+
+	$("#desktopButton").on("click", function() {
+		minimizeAllWindows();
 	});
 });
 
